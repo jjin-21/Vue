@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .normal {
+            border: 1px solid lightgray;
+            background-color: lightgray;
+        }
+        .expensive {
+            border: 1px solid lightgray;
+            background-color: lightcoral;
+        }
+        .cheap {
+            border: 1px solid lightgray;
+            background-color: lightgreen;
+        }
+        .end {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <div id="app">
+        <h1>다양한 전시 정보</h1>
+        <div v-if="selectedInfos.length !== 0">
+            <h3>관람 예정인 전시 : </h3>
+            <p>예상 총 금액 : </p>
+        </div>
+        <h3 v-else>관람 예정인 전시가 없습니다.</h3>
+        <input type="checkbox" id="checkbox" v-model="checkbox">
+        <label for="checkbox">전시 중인 정보만 보기</label>
+        <hr>
+        <ul v-for="info in infomations">
+            <template v-for="(value, key) in info">
+                <li :class="{'expensive': value.price >= 20000, 'cheap':value.price <= 5000, 'normal': 5000 < value.price < 20000}" v-if="value.isActive || !checkbox">
+                    <div>
+                        <div v-if="value.isActive">
+                            <input type="checkbox" name="isSelected" id="isSelected" v-model="value.isSelected">
+                            <label for="isSelected">전시 관람 하기</label>
+                        </div>
+                        <p class="end" v-else>전시가 종료되어 관람 할 수 없습니다.</p>
+                    </div>
+                    <h3>{{key}}</h3>
+                    <p>{{value.loca}}</p>
+                    <p>가격 : {{value.price}}</p>
+                    <p v-if="value.price === 0">무료 전시입니다.</p>
+                    <hr>
+                </li>
+            </template>
+        </ul>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const {createApp, ref} = Vue
+        const app = createApp({
+            setup() {
+                const checkbox = ref(false)
+                const infomations = ref([
+                    {"무라카미 다카시 : 무라카시좀비": {loca: "부산 시립 미술관",
+                        price: 1000, isActive: ref(true), isSelected: ref(false)}},
+                    {"마우라치오 카텔란 개인전": {loca: "리움 미술관", 
+                        price: 30000, isActive: ref(true), isSelected: ref(false)}},
+                    {"조선백자전": {loca: "리움 미술관", 
+                        price: 30000, isActive: ref(true), isSelected: ref(false)}},
+                    {"한국 실험미술 1960 - 1970": {loca: "국립현대미술관",
+                        price: 0, isActive: ref(true), isSelected: ref(false)}},
+                    {"에드워드 호퍼 : 길 위에서": {loca: "서울 시립 미술관",
+                        price: 1000, isActive: ref(false), isSelected: ref(false)}},
+                    {"알렉산더 칼더 x 이우환": {loca: "국제갤러리 서울점", 
+                        price: 15000, isActive: ref(false), isSelected: ref(false)}}
+                ])
+                const selectedInfos = ref([])
+                const totalPrice = ref(0)
+                
+
+            return {
+                checkbox,
+                infomations,
+                selectedInfos,
+                totalPrice
+            }
+            }
+        })
+        app.mount('#app')
+    </script>
+</body>
+</html>

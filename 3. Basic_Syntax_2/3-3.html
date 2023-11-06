@@ -29,11 +29,6 @@
         <ul v-for="info in infomations">
             <template  v-for="(value, key) in info">
                 <li :class="{'expensive': value.price >= 20000, 'cheap':value.price <= 5000, 'normal': 5000 < value.price < 20000}" v-if="value.isActive || !checkbox">
-                    <div>
-                        <input type="checkbox" name="" id="">
-                        <label for="">전시 관람 하기</label>
-                        <p>전시가 종료되어 관람 할 수 없습니다.</p>
-                    </div>
                     <h3>{{key}}</h3>
                     <p>{{value.loca}}</p>
                     <p>가격 : {{value.price}}</p>

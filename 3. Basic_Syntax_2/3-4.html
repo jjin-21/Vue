@@ -17,6 +17,9 @@
             border: 1px solid lightgray;
             background-color: lightgreen;
         }
+        .end {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -27,8 +30,15 @@
         <label for="checkbox">전시 중인 정보만 보기</label>
         <hr>
         <ul v-for="info in infomations">
-            <template  v-for="(value, key) in info">
-                <li :class="{'expensive': value.price >= 20000, 'cheap':value.price <= 5000, 'normal': 5000 < value.price < 20000}" v-if="value.isDisplay || !checkbox">
+            <template v-for="(value, key) in info">
+                <li :class="{'expensive': value.price >= 20000, 'cheap':value.price <= 5000, 'normal': 5000 < value.price < 20000}" v-if="value.isActive || !checkbox">
+                    <div>
+                        <div v-if="value.isActive">
+                            <input type="checkbox" name="isSelected" id="isSelected" v-model="isSelected">
+                            <label for="isSelected">전시 관람 하기</label>
+                        </div>
+                        <p class="end" v-else>전시가 종료되어 관람 할 수 없습니다.</p>
+                    </div>
                     <h3>{{key}}</h3>
                     <p>{{value.loca}}</p>
                     <p>가격 : {{value.price}}</p>
@@ -47,18 +57,19 @@
                 const checkbox = ref(false)
                 const infomations = ref([
                     {"무라카미 다카시 : 무라카시좀비": {loca: "부산 시립 미술관",
-                        price: 1000, isDisplay: ref(true)}},
+                        price: 1000, isActive: ref(true)}},
                     {"마우라치오 카텔란 개인전": {loca: "리움 미술관", 
-                        price: 30000, isDisplay: ref(true)}},
+                        price: 30000, isActive: ref(true)}},
                     {"조선백자전": {loca: "리움 미술관", 
-                        price: 30000, isDisplay: ref(true)}},
+                        price: 30000, isActive: ref(true)}},
                     {"한국 실험미술 1960 - 1970": {loca: "국립현대미술관",
-                        price: 0, isDisplay: ref(true)}},
+                        price: 0, isActive: ref(true)}},
                     {"에드워드 호퍼 : 길 위에서": {loca: "서울 시립 미술관",
-                        price: 1000, isDisplay: ref(false)}},
+                        price: 1000, isActive: ref(false)}},
                     {"알렉산더 칼더 x 이우환": {loca: "국제갤러리 서울점", 
-                        price: 15000, isDisplay: ref(false)}}
+                        price: 15000, isActive: ref(false)}}
                 ])
+                const isSelected = ref(false)
 
             return {
                 checkbox,

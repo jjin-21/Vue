@@ -2,7 +2,8 @@
     <div>
         <h3>보유 명함 목록</h3>
         <div>
-            <p>현재 보유중인 명함 수 : </p>
+            <p v-if="cardInfos.length>0">현재 보유중인 명함 수 : {{ cardInfos.length }}</p>
+            <p v-else>명함이 없습니다. 새로운 명함을 추가해 주세요.</p>
         </div>
         <div class="card">
             <BusinessCardDetail v-for="card in cardInfos" :key="card" 
@@ -15,7 +16,7 @@
 
 <script setup>
 import BusinessCardDetail from './BusinessCardDetail.vue';
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 
 const cardInfos = ref([
     {name: '일론 머스크', title: '테슬라 테크노킹'},
@@ -29,11 +30,18 @@ const deleteCard = function(info) {
     const cardIndex = cardInfos.value.findIndex((card)=>{ 
             return card.name === info.name && card.title === info.title
         })
-        console.log(cardIndex)
         if (cardIndex !== -1) {
             cardInfos.value.splice(cardIndex,1)
         }
 }
+
+const props = defineProps({
+    newinfo: Object
+})
+
+watch(props.newinfo, (card) => {
+    cardInfos.value.push(card)
+}) 
 </script>
 
 <style scoped>

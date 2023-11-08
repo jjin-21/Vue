@@ -8,10 +8,11 @@
 
     <main>
       <p>명함을 관리하는 페이지입니다. 여기에 명함 목록이 표시됩니다.</p>
+      <CreateCardForm @create-card-event="updateCard" />
     </main>
 
     <article>
-      <BusinessCard />
+      <BusinessCard :newinfo="newCard" />
     </article>
 
     <footer>
@@ -21,17 +22,33 @@
 </template>
 
 <script setup>
+import CreateCardForm from './components/CreateCardForm.vue';
 import BusinessCard from './components/BusinessCard.vue';
+import {ref} from 'vue'
+
+const newCard = ref({
+  name: "",
+  title: ""
+})
+const updateCard = function(newinfo) {
+  newCard.value.name = newinfo.name,
+  newCard.value.title = newinfo.title
+}
+
 </script>
 
 <style scoped>
-header, main, article {
+header, main {
   text-align: center;
+}
+article {
+  text-align: center;
+  padding-bottom: 50px;
 }
 footer {
   text-align: center;
   background-color: lightgray;
-  padding-top: 10px;
+  margin-top: 10px;
   position: fixed;
   bottom: 0;
   width: 100%;

@@ -27,8 +27,8 @@
     <div id="app">
         <h1>다양한 전시 정보</h1>
         <div v-if="selectedInfos.length !== 0">
-            <h3>관람 예정인 전시 : </h3>
-            <p>예상 총 금액 : </p>
+            <h3>관람 예정인 전시 : {{selectedInfos.join(', ')}}</h3>
+            <p>예상 총 금액 : {{totalPrice}}</p>
         </div>
         <h3 v-else>관람 예정인 전시가 없습니다.</h3>
         <input type="checkbox" id="checkbox" v-model="checkbox">
@@ -56,7 +56,7 @@
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
-        const {createApp, ref} = Vue
+        const {createApp, ref, watch} = Vue
         const app = createApp({
             setup() {
                 const checkbox = ref(false)
@@ -77,6 +77,13 @@
                 const selectedInfos = ref([])
                 const totalPrice = ref(0)
                 
+                watch(infomations.value, (newInfos, oldInfos) => {
+                    const filteredInfos = newInfos.filter(info => info[Object.keys(info)[0]].isSelected);
+                    selectedInfos.value = filteredInfos.map(info => Object.keys(info)[0]);
+                    totalPrice.value = filteredInfos.reduce((acc, info) => {
+                        return acc + info[Object.keys(info)[0]].price;
+                    }, 0);
+                });
 
             return {
                 checkbox,
